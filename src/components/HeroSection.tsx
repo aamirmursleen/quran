@@ -83,38 +83,52 @@ export function HeroSection() {
             </Link>
           </div>
 
-          <div id="search" className="w-full max-w-3xl space-y-4">
-            <div className="flex items-center gap-3 rounded-2xl border border-transparent bg-white/90 px-4 py-3 shadow-[var(--shadow-lg)] search-glow">
-              <span className="text-2xl text-[#0D7377]">🔍</span>
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={placeholderOptions[placeholderIndex]}
-                className="w-full bg-transparent text-base text-[#2C3E50] placeholder:text-[#2C3E50]/40 focus:outline-none"
-                aria-label="Search the Islamic PDF Library"
+          <div id="search" className="w-full max-w-4xl space-y-3" data-animate="fade-up">
+            <div className="search-glow relative overflow-hidden rounded-[2.5rem] border border-[#0D7377]/10 bg-white/95 p-6 shadow-[var(--shadow-lg)]">
+              <div
+                className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-[#0D7377]/8 via-white to-[#4DB8B8]/5"
+                aria-hidden
               />
-              <button
-                type="button"
-                className="group flex items-center gap-2 rounded-full bg-[#0D7377] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#095c60]"
-              >
-                <span className="text-lg">✨</span>
-                <span className="hidden sm:inline">Ask AI</span>
-              </button>
-            </div>
-            <p className="text-xs text-[#2C3E50]/60">
-              Press enter to search across 5,000+ PDFs, audio recitations, and study resources. Need help? Jump to the AI guide below.
-            </p>
-            <div className="flex flex-wrap items-center gap-3 text-sm text-[#2C3E50]/70">
-              <span className="text-xs uppercase tracking-widest text-[#0D7377]/70">Popular:</span>
-              {heroQuickLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-full border border-[#0D7377]/10 bg-white/70 px-4 py-2 transition hover:border-[#0D7377]/40 hover:bg-[#0D7377]/10 hover:text-[#0D7377]"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <div className="relative flex flex-col gap-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+                  <div className="flex flex-1 items-center gap-4 rounded-[2rem] bg-white/80 px-6 py-5 text-lg text-[#2C3E50] shadow-[var(--shadow-sm)]">
+                    <span className="text-3xl text-[#0D7377]">🔍</span>
+                    <input
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                      placeholder={placeholderOptions[placeholderIndex]}
+                      className="w-full bg-transparent text-lg text-[#2C3E50] placeholder:text-[#2C3E50]/40 focus:outline-none"
+                      aria-label="Search the Islamic PDF Library"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="group inline-flex items-center justify-center gap-3 rounded-[2rem] bg-[#0D7377] px-8 py-4 text-base font-semibold text-white transition hover:bg-[#095c60]"
+                  >
+                    <span className="text-xl">✨</span>
+                    <span>Ask AI</span>
+                  </button>
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm text-[#2C3E50]/60">
+                    Press enter to search across 5,000+ PDFs, audio recitations, and study resources. Need help? Jump to the AI guide below.
+                  </p>
+                  <div className="flex flex-wrap items-center gap-2 text-sm">
+                    <span className="rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#0D7377]">
+                      Popular now
+                    </span>
+                    {heroQuickLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="rounded-full border border-[#0D7377]/15 bg-white/70 px-4 py-2 text-[#2C3E50]/70 transition hover:border-[#0D7377]/40 hover:bg-[#0D7377]/10 hover:text-[#0D7377]"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
