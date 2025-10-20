@@ -4,7 +4,6 @@ import { FeaturedSurahs } from "@/components/FeaturedSurahs";
 import { HeroSection } from "@/components/HeroSection";
 import { PopularDownloads } from "@/components/PopularDownloads";
 import { QuickActionsBar } from "@/components/QuickActionsBar";
-import { SiteFooter } from "@/components/SiteFooter";
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
         <BrowseCategories />
         <PopularDownloads />
       </main>
-      <SiteFooter />
     </div>
   );
 }

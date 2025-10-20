@@ -5,6 +5,8 @@ import {
   Scheherazade_New,
 } from "next/font/google";
 import "./globals.css";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -41,7 +43,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} ${scheherazade.variable} antialiased bg-[#FEFDF8] text-[#2C3E50]`}
       >
+        <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
