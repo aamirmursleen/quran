@@ -24,33 +24,7 @@ export function HeroSection() {
 
   return (
     <header className="hero-pattern relative overflow-hidden bg-[#FEFDF8]">
-      <div className="hero-content mx-auto flex min-h-screen max-w-6xl flex-col gap-16 px-6 pb-36 pt-8 sm:px-12">
-        <nav className="flex items-center justify-between rounded-2xl border border-white/60 bg-white/80 px-6 py-4 shadow-sm backdrop-blur" aria-label="Primary">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0D7377]/10 text-[#0D7377] text-xl font-semibold shadow-sm">
-              🕌
-            </div>
-            <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-[#0D7377]">Islamic PDF Library</p>
-              <p className="text-sm text-[#2C3E50]/70">Gateway to timeless knowledge</p>
-            </div>
-          </div>
-          <div className="hidden items-center gap-3 sm:flex">
-            <Link
-              href="/donate"
-              className="rounded-full border border-[#D4AF37]/50 bg-white px-5 py-2 text-sm font-medium text-[#D4AF37] transition hover:bg-[#D4AF37] hover:text-white"
-            >
-              Donate
-            </Link>
-            <button
-              type="button"
-              className="rounded-full border border-transparent bg-[#0D7377] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#095c60]"
-            >
-              Language
-            </button>
-          </div>
-        </nav>
-
+      <div className="hero-content mx-auto flex min-h-screen max-w-6xl flex-col gap-14 px-6 pb-36 pt-12 sm:px-12">
         <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center md:items-start md:text-left">
           <div className="inline-flex items-center gap-3 rounded-full border border-[#0D7377]/20 bg-white/60 px-4 py-2 text-sm text-[#0D7377] shadow-sm">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0D7377]/10 text-base">✨</span>
