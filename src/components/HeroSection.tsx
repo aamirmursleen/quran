@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { heroQuickLinks } from "@/data/content";
 
@@ -11,6 +12,7 @@ const placeholderOptions = [
 ];
 
 export function HeroSection() {
+  const router = useRouter();
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [query, setQuery] = useState("");
 
@@ -64,7 +66,14 @@ export function HeroSection() {
                 aria-hidden
               />
               <div className="relative flex flex-col gap-5">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+                <form
+                  className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    if (!query.trim()) return;
+                    router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+                  }}
+                >
                   <div className="flex flex-1 items-center gap-4 rounded-[2rem] bg-white/80 px-6 py-5 text-lg text-[#2C3E50] shadow-[var(--shadow-sm)]">
                     <span className="text-3xl text-[#0D7377]">🔍</span>
                     <input
@@ -76,18 +85,24 @@ export function HeroSection() {
                     />
                   </div>
                   <button
-                    type="button"
+                    type="submit"
                     className="group inline-flex items-center justify-center gap-3 rounded-[2rem] bg-[#0D7377] px-8 py-4 text-base font-semibold text-white transition hover:bg-[#095c60]"
                   >
-                    <span className="text-xl">✨</span>
-                    <span>Ask AI</span>
+                    <span className="text-xl">🔎</span>
+                    <span>Search</span>
                   </button>
-                </div>
+                </form>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-sm text-[#2C3E50]/60">
                     Press enter to search across 5,000+ PDFs, audio recitations, and study resources. Need help? Jump to the AI guide below.
                   </p>
                   <div className="flex flex-wrap items-center gap-2 text-sm">
+                    <Link
+                      href="#ask-ai"
+                      className="inline-flex items-center gap-2 rounded-full border border-[#0D7377]/30 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#0D7377] transition hover:border-[#0D7377]/60 hover:bg-[#0D7377]/10"
+                    >
+                      ✨ Ask AI
+                    </Link>
                     <span className="rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#0D7377]">
                       Popular now
                     </span>

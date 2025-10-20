@@ -82,11 +82,11 @@ export function AIAssistant({ isOpen, onClose }: AIAssistantProps) {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to get response");
-      }
-
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "Failed to get response");
+      }
 
       const assistantMessage: Message = {
         role: "assistant",
@@ -98,7 +98,10 @@ export function AIAssistant({ isOpen, onClose }: AIAssistantProps) {
       console.error("Error:", error);
       const errorMessage: Message = {
         role: "assistant",
-        content: "I apologize, but I encountered an error. Please try again.",
+        content:
+          error instanceof Error
+            ? error.message
+            : "I apologize, but I encountered an error. Please try again.",
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {

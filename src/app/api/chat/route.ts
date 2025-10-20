@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "dummy-key-for-build",
-});
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
 const SYSTEM_PROMPT = `You are a helpful AI assistant for an Islamic digital library. Your role is to help users find Islamic resources including:
 
@@ -27,6 +27,42 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.ip ||
+      "anonymous";
+    const now = Date.now();
+    const current = rateLimitStore.get(ip);
+
+    if (current && current.resetAt <= now) {
+      rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    } else if (current && current.resetAt > now) {
+      if (current.count >= RATE_LIMIT_MAX_REQUESTS) {
+        const retryAfter = Math.ceil((current.resetAt - now) / 1000);
+        return NextResponse.json(
+          {
+            error: `Rate limit reached. Please wait ${retryAfter} seconds before trying again.`,
+          },
+          {
+            status: 429,
+            headers: {
+              "Retry-After": retryAfter.toString(),
+            },
+          },
+        );
+      }
+
+      rateLimitStore.set(ip, {
+        count: current.count + 1,
+        resetAt: current.resetAt,
+      });
+    } else {
+      rateLimitStore.set(ip, {
+        count: 1,
+        resetAt: now + RATE_LIMIT_WINDOW_MS,
+      });
+    }
+
     const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
@@ -35,6 +71,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",

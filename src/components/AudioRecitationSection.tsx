@@ -1,30 +1,21 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import { reciters as reciterData } from "@/data/audio";
 
-const reciters = [
+const reciterIcons = ["🎙️", "🕌", "💝"];
+
+const reciterCards = [
+  ...reciterData.slice(0, 3).map((reciter, index) => ({
+    name: reciter.name,
+    description: reciter.description,
+    icon: reciterIcons[index] ?? "🎧",
+    href: `/audio/al-fatiha?reciter=${reciter.id}`,
+  })),
   {
-    name: "Sheikh Mishary Rashid",
-    description: "Beautiful voice. Very popular worldwide.",
-    icon: "🎙️",
-    href: "/audio/mishary-rashid",
-  },
-  {
-    name: "Abdul Rahman Al-Sudais",
-    description: "Imam of Masjid al-Haram. Clear pronunciation.",
-    icon: "🕌",
-    href: "/audio/abdul-rahman-sudais",
-  },
-  {
-    name: "Saad Al-Ghamdi",
-    description: "Emotional recitation. Great for beginners.",
-    icon: "💝",
-    href: "/audio/saad-ghamdi",
-  },
-  {
-    name: "More Reciters",
-    description: "Explore 50+ famous Quran reciters.",
+    name: "Discover more reciters",
+    description: "Browse the full library of voices and narration styles.",
     icon: "🎧",
-    href: "/reciters",
+    href: "/audio",
   },
 ];
 
@@ -46,7 +37,7 @@ export function AudioRecitationSection() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-10">
-          {reciters.map((reciter, idx) => (
+          {reciterCards.map((reciter, idx) => (
             <Link
               key={idx}
               href={reciter.href}

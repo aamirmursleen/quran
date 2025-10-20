@@ -1,14 +1,28 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { surahDetails } from "@/data/content";
+import { allSurahs } from "@/data/surahs";
+import { downloadVariants } from "@/data/downloadManifest";
 
 export default function SurahDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const detail =
-    surahDetails[params.slug as keyof typeof surahDetails] ||
-    surahDetails.yasin;
+  const surahMeta = allSurahs.find((item) => item.slug === params.slug);
+
+  if (!surahMeta) {
+    notFound();
+  }
+
+  const detail = surahDetails[surahMeta.slug];
+  const downloadOptions = downloadVariants.map((variant) => ({
+    id: variant.id,
+    label: variant.label,
+    url: variant.url(surahMeta),
+    description: variant.description,
+    language: variant.language,
+  }));
 
   return (
     <div className="min-h-screen bg-[#FEFDF8] pb-24">
@@ -110,7 +124,7 @@ export default function SurahDetailPage({
                   href={`/download/${detail.slug}`}
                   className="flex-1 rounded-2xl bg-[#0D7377] px-6 py-4 text-center text-lg font-semibold text-white transition hover:bg-[#095c60]"
                 >
-                  ⬇️ Download PDF
+                  ⬇️ Quick download
                 </Link>
                 <Link
                   href={`/viewer/${detail.slug}`}
@@ -142,15 +156,20 @@ export default function SurahDetailPage({
             </div>
 
             <div className="rounded-3xl border border-white/80 bg-white p-8 shadow-[var(--shadow-md)]">
-              <h3 className="text-xl font-semibold text-[#0D7377]">Also available</h3>
-              <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-[#0D7377]">
-                {detail.formats.slice(1).map((format) => (
-                  <span
-                    key={format}
-                    className="rounded-2xl border border-[#0D7377]/20 bg-[#0D7377]/10 px-4 py-2"
+              <h3 className="text-xl font-semibold text-[#0D7377]">Download formats</h3>
+              <div className="mt-4 grid gap-3 text-sm text-[#2C3E50]/80 md:grid-cols-2">
+                {downloadOptions.map((option) => (
+                  <Link
+                    key={option.id}
+                    href={option.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col gap-1 rounded-2xl border border-[#0D7377]/20 bg-[#0D7377]/5 px-4 py-3 transition hover:border-[#0D7377]/40 hover:bg-[#0D7377]/10"
                   >
-                    + {format}
-                  </span>
+                    <span className="font-semibold text-[#0D7377]">{option.label}</span>
+                    <span className="text-xs uppercase tracking-[0.3em] text-[#0D7377]/70">{option.language}</span>
+                    <span className="text-xs text-[#2C3E50]/60">{option.description}</span>
+                  </Link>
                 ))}
               </div>
             </div>

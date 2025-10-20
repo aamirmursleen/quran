@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { allSurahs } from "@/data/surahs";
+import { searchSurahs, type SurahSearchResult } from "@/lib/searchSurahs";
 
 const revelationFilters = [
   { label: "All", value: "all" as const },
@@ -15,20 +16,45 @@ export default function DownloadIndexPage() {
   const [revelation, setRevelation] = useState<(typeof revelationFilters)[number]["value"]>(
     "all",
   );
+  const [results, setResults] = useState<SurahSearchResult[]>(() => searchSurahs("", "all"));
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredSurahs = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    return allSurahs.filter((surah) => {
-      const matchesTerm = term
-        ? `${surah.number} ${surah.transliteration} ${surah.english} ${surah.arabic}`
-            .toLowerCase()
-            .includes(term)
-        : true;
-      const matchesRevelation =
-        revelation === "all" ? true : surah.revelation === revelation;
-      return matchesTerm && matchesRevelation;
-    });
+  useEffect(() => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      setIsLoading(true);
+      setError(null);
+
+      const params = new URLSearchParams();
+      if (search.trim()) params.set("q", search.trim());
+      params.set("revelation", revelation);
+      params.set("limit", "114");
+
+      fetch(`/api/search?${params.toString()}`, { signal: controller.signal })
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error("Failed to search");
+          }
+          const payload = await response.json();
+          setResults(payload.results);
+        })
+        .catch((err) => {
+          if (err.name === "AbortError") return;
+          setError("Unable to search right now. Please try again shortly.");
+        })
+        .finally(() => setIsLoading(false));
+    }, 250);
+
+    return () => {
+      controller.abort();
+      clearTimeout(timeout);
+    };
   }, [revelation, search]);
+
+  const totalSurahs = allSurahs.length;
+  const makkiCount = allSurahs.filter((item) => item.revelation === "Makki").length;
+  const madaniCount = totalSurahs - makkiCount;
 
   return (
     <main className="min-h-screen bg-[#FEFDF8] px-6 py-16 text-[#2C3E50] sm:px-12">
@@ -85,19 +111,15 @@ export default function DownloadIndexPage() {
             <div className="grid gap-4 text-sm text-[#2C3E50]/60 sm:grid-cols-3">
               <div className="rounded-2xl border border-[#0D7377]/10 bg-[#0D7377]/5 px-5 py-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-[#0D7377]/80">Total Surahs</p>
-                <p className="mt-2 text-2xl font-semibold text-[#0D7377]">114</p>
+                <p className="mt-2 text-2xl font-semibold text-[#0D7377]">{totalSurahs}</p>
               </div>
               <div className="rounded-2xl border border-[#0D7377]/10 bg-[#0D7377]/5 px-5 py-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-[#0D7377]/80">Makki Chapters</p>
-                <p className="mt-2 text-2xl font-semibold text-[#0D7377]">
-                  {allSurahs.filter((item) => item.revelation === "Makki").length}
-                </p>
+                <p className="mt-2 text-2xl font-semibold text-[#0D7377]">{makkiCount}</p>
               </div>
               <div className="rounded-2xl border border-[#0D7377]/10 bg-[#0D7377]/5 px-5 py-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-[#0D7377]/80">Madani Chapters</p>
-                <p className="mt-2 text-2xl font-semibold text-[#0D7377]">
-                  {allSurahs.filter((item) => item.revelation === "Madani").length}
-                </p>
+                <p className="mt-2 text-2xl font-semibold text-[#0D7377]">{madaniCount}</p>
               </div>
             </div>
           </div>
@@ -106,8 +128,9 @@ export default function DownloadIndexPage() {
         <section className="space-y-10" data-animate="fade-up" data-delay="1">
           <div className="flex items-center justify-between text-sm text-[#2C3E50]/60">
             <p>
-              Showing <span className="font-semibold text-[#0D7377]">{filteredSurahs.length}</span> of 114 surahs
+              Showing <span className="font-semibold text-[#0D7377]">{results.length}</span> of {totalSurahs} surahs
             </p>
+            {isLoading && <span className="text-xs uppercase tracking-[0.3em] text-[#0D7377]">Searching…</span>}
             <Link
               href="#top"
               className="hidden items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#0D7377]/70 transition hover:text-[#0D7377] sm:inline-flex"
@@ -116,11 +139,19 @@ export default function DownloadIndexPage() {
             </Link>
           </div>
 
+          {error && (
+            <div className="rounded-3xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
+              {error}
+            </div>
+          )}
+
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {filteredSurahs.map((surah) => (
+            {results.map((surah) => (
               <article
                 key={surah.number}
-                className="group relative overflow-hidden rounded-3xl border border-white/70 bg-white p-5 shadow-[var(--shadow-md)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]"
+                className={`group relative overflow-hidden rounded-3xl border border-white/70 bg-white p-5 shadow-[var(--shadow-md)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-lg)] ${
+                  isLoading ? "opacity-60" : ""
+                }`}
                 data-animate="fade-up"
               >
                 <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-[#0D7377]/10 to-[#4DB8B8]/10" />
@@ -175,7 +206,7 @@ export default function DownloadIndexPage() {
             ))}
           </div>
 
-          {filteredSurahs.length === 0 && (
+          {!isLoading && results.length === 0 && (
             <div className="rounded-3xl border border-dashed border-[#0D7377]/30 bg-[#0D7377]/5 px-6 py-10 text-center text-sm text-[#2C3E50]/70">
               <p className="text-base font-semibold text-[#0D7377]">No matches found</p>
               <p className="mt-2">Try adjusting your search or clearing the revelation filter.</p>

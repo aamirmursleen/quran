@@ -1,16 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { useMemo, useState } from "react";
 import { surahDetails, viewerShortcuts } from "@/data/content";
+import { allSurahs } from "@/data/surahs";
 
 export default function ViewerPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const detail =
-    surahDetails[params.slug as keyof typeof surahDetails] || surahDetails.yasin;
+  const surahMeta = allSurahs.find((item) => item.slug === params.slug);
+
+  if (!surahMeta) {
+    notFound();
+  }
+
+  const detail = surahDetails[surahMeta.slug];
 
   const [page, setPage] = useState(1);
   const [zoom, setZoom] = useState(100);

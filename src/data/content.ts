@@ -1,3 +1,6 @@
+import { allSurahs } from "./surahs";
+import { downloadVariants } from "./downloadManifest";
+
 export type Surah = {
   id: number;
   slug: string;
@@ -202,30 +205,46 @@ export const viewerShortcuts = [
   { combo: "N", label: "Night mode" },
 ];
 
-export const surahDetails: Record<string, SurahDetail> = {
-  yasin: {
-    slug: "yasin",
-    title: "Surah Yasin",
-    arabicTitle: "سورة يس",
-    chapter: 36,
-    verses: 83,
-    downloads: "12,459",
-    rating: "4.9",
-    size: "2.4 MB",
-    pages: 18,
-    languages: ["Arabic"],
-    formats: ["High-Quality PDF", "With Translation", "With Transliteration", "Audio Guide"],
-    description:
-      "Surah Yasin is the heart of the Qur'an, recited daily by millions seeking mercy, protection, and blessings. This edition features high-resolution calligraphy, verified vowels, and beautiful typography for immersive reading.",
-    highlights: [
-      "Includes virtue summaries from authentic narrations",
-      "Bookmark-ready pages for print or tablet reading",
-      "Curated recitation playlist for memorisation",
-    ],
-    related: [
-      { title: "Surah Ar-Rahman – The Most Merciful", href: "/surah/ar-rahman" },
-      { title: "Surah Al-Waqi'ah – Sustenance", href: "/surah/al-waqiah" },
-      { title: "Morning & Evening Adhkar", href: "/dua/morning-evening" },
-    ],
+const downloadNumberFormatter = new Intl.NumberFormat("en-US");
+
+const languagesAvailable = Array.from(
+  new Set(downloadVariants.map((variant) => variant.language)),
+);
+
+export const surahDetails: Record<string, SurahDetail> = allSurahs.reduce(
+  (acc, surah, index) => {
+    const estimatedDownloads = 9000 + (114 - surah.number) * 85;
+    const estimatedPages = Math.max(4, Math.ceil(surah.verses / 12) + 2);
+    const estimatedSize = (downloadVariants[0]?.approximateSizeMB ?? 1.5) + surah.verses * 0.01;
+    const relatedItems = [1, 2, 3]
+      .map((offset) => allSurahs[(index + offset) % allSurahs.length])
+      .map((relatedSurah) => ({
+        title: `Surah ${relatedSurah.transliteration}`,
+        href: `/surah/${relatedSurah.slug}`,
+      }));
+
+    acc[surah.slug] = {
+      slug: surah.slug,
+      title: `Surah ${surah.transliteration}`,
+      arabicTitle: `سورة ${surah.arabic}`,
+      chapter: surah.number,
+      verses: surah.verses,
+      downloads: downloadNumberFormatter.format(estimatedDownloads),
+      rating: (4.6 + ((surah.number % 7) * 0.05)).toFixed(1),
+      size: `~${estimatedSize.toFixed(1)} MB`,
+      pages: estimatedPages,
+      languages: languagesAvailable,
+      formats: downloadVariants.map((variant) => variant.label),
+      description: `A ${surah.revelation.toLowerCase()} chapter of ${surah.verses} verses focusing on ${surah.english.toLowerCase()}. Download the Qur'an text and supporting translations instantly for study or memorisation.`,
+      highlights: [
+        `${surah.revelation} revelation • ${surah.verses} verses`,
+        `Includes ${downloadVariants.length} curated PDF formats (Arabic & English).`,
+        `Ideal for printing, tablet reading, and pairing with audio recitation.`,
+      ],
+      related: relatedItems,
+    };
+
+    return acc;
   },
-};
+  {} as Record<string, SurahDetail>,
+);

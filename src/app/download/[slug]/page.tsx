@@ -1,24 +1,38 @@
 "use client";
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import {
   inspirationalQuotes,
   recommendedAfterDownload,
   surahDetails,
 } from "@/data/content";
+import { allSurahs } from "@/data/surahs";
+import { downloadVariants } from "@/data/downloadManifest";
 
 export default function DownloadFlowPage({
   params,
 }: {
   params: { slug: string };
 }) {
+  const surahMeta = allSurahs.find((item) => item.slug === params.slug);
+
+  if (!surahMeta) {
+    notFound();
+  }
+
+  const detail = surahDetails[surahMeta.slug];
+  const downloadOptions = downloadVariants.map((variant) => ({
+    id: variant.id,
+    label: variant.label,
+    url: variant.url(surahMeta),
+    language: variant.language,
+  }));
+
   const [progress, setProgress] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [quoteIndex, setQuoteIndex] = useState(0);
-
-  const detail =
-    surahDetails[params.slug as keyof typeof surahDetails] || surahDetails.yasin;
 
   useEffect(() => {
     const progressTimer = setInterval(() => {
@@ -103,7 +117,9 @@ export default function DownloadFlowPage({
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a
-                href="#"
+                href={downloadOptions[0]?.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-full bg-[#0D7377] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#095c60]"
               >
                 📂 Open file
@@ -114,6 +130,25 @@ export default function DownloadFlowPage({
               >
                 🔄 Download again
               </Link>
+            </div>
+            <div className="w-full rounded-3xl border border-white/70 bg-white p-6 shadow-[var(--shadow-md)]">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-[#0D7377]">
+                Alternative formats
+              </h3>
+              <div className="mt-3 grid gap-3 text-sm text-[#2C3E50]/70 md:grid-cols-2">
+                {downloadOptions.map((option) => (
+                  <a
+                    key={option.id}
+                    href={option.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col gap-1 rounded-2xl border border-[#0D7377]/20 bg-[#0D7377]/5 px-4 py-3 transition hover:border-[#0D7377]/40 hover:bg-[#0D7377]/10"
+                  >
+                    <span className="font-semibold text-[#0D7377]">{option.label}</span>
+                    <span className="text-xs uppercase tracking-[0.3em] text-[#0D7377]/70">{option.language}</span>
+                  </a>
+                ))}
+              </div>
             </div>
             <div className="grid gap-3 text-sm text-[#2C3E50]/70">
               <p className="font-semibold text-[#0D7377]">Continue learning:</p>
