@@ -46,10 +46,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: responseMessage,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("OpenAI API Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to get AI response";
     return NextResponse.json(
-      { error: error.message || "Failed to get AI response" },
+      { error: errorMessage },
       { status: 500 }
     );
   }
