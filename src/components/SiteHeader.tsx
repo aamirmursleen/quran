@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AIAssistant } from "./AIAssistant";
 
 const megaMenuData = {
@@ -111,6 +111,33 @@ export function SiteHeader() {
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [isMobileSubmenuOpen, setIsMobileSubmenuOpen] = useState<string | null>(null);
   const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
+  const closeMegaMenuTimeout = useRef<number | null>(null);
+
+  const openMegaMenu = (menu: string | null) => {
+    if (closeMegaMenuTimeout.current) {
+      window.clearTimeout(closeMegaMenuTimeout.current);
+      closeMegaMenuTimeout.current = null;
+    }
+    setActiveMegaMenu(menu);
+  };
+
+  const scheduleMegaMenuClose = () => {
+    if (closeMegaMenuTimeout.current) {
+      window.clearTimeout(closeMegaMenuTimeout.current);
+    }
+    closeMegaMenuTimeout.current = window.setTimeout(() => {
+      setActiveMegaMenu(null);
+      closeMegaMenuTimeout.current = null;
+    }, 120);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeMegaMenuTimeout.current) {
+        window.clearTimeout(closeMegaMenuTimeout.current);
+      }
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-[#FEFDF8]/95 border-b border-[#0D7377]/10 shadow-sm">
@@ -143,10 +170,17 @@ export function SiteHeader() {
             {/* Quran Mega Menu */}
             <div
               className="relative"
-              onMouseEnter={() => setActiveMegaMenu("quran")}
-              onMouseLeave={() => setActiveMegaMenu(null)}
+              onMouseEnter={() => openMegaMenu("quran")}
+              onMouseLeave={scheduleMegaMenuClose}
             >
-              <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-[#2C3E50]/80 rounded-lg transition-all hover:bg-[#0D7377]/10 hover:text-[#0D7377]">
+              <button
+                className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-[#2C3E50]/80 rounded-lg transition-all hover:bg-[#0D7377]/10 hover:text-[#0D7377]"
+                onClick={() =>
+                  activeMegaMenu === "quran" ? scheduleMegaMenuClose() : openMegaMenu("quran")
+                }
+                onFocus={() => openMegaMenu("quran")}
+                onBlur={scheduleMegaMenuClose}
+              >
                 {megaMenuData.quran.icon} Quran
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -157,10 +191,17 @@ export function SiteHeader() {
             {/* Hadith Mega Menu */}
             <div
               className="relative"
-              onMouseEnter={() => setActiveMegaMenu("hadith")}
-              onMouseLeave={() => setActiveMegaMenu(null)}
+              onMouseEnter={() => openMegaMenu("hadith")}
+              onMouseLeave={scheduleMegaMenuClose}
             >
-              <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-[#2C3E50]/80 rounded-lg transition-all hover:bg-[#0D7377]/10 hover:text-[#0D7377]">
+              <button
+                className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-[#2C3E50]/80 rounded-lg transition-all hover:bg-[#0D7377]/10 hover:text-[#0D7377]"
+                onClick={() =>
+                  activeMegaMenu === "hadith" ? scheduleMegaMenuClose() : openMegaMenu("hadith")
+                }
+                onFocus={() => openMegaMenu("hadith")}
+                onBlur={scheduleMegaMenuClose}
+              >
                 {megaMenuData.hadith.icon} Hadith
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -171,10 +212,19 @@ export function SiteHeader() {
             {/* Library Mega Menu */}
             <div
               className="relative"
-              onMouseEnter={() => setActiveMegaMenu("library")}
-              onMouseLeave={() => setActiveMegaMenu(null)}
+              onMouseEnter={() => openMegaMenu("library")}
+              onMouseLeave={scheduleMegaMenuClose}
             >
-              <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-[#2C3E50]/80 rounded-lg transition-all hover:bg-[#0D7377]/10 hover:text-[#0D7377]">
+              <button
+                className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-[#2C3E50]/80 rounded-lg transition-all hover:bg-[#0D7377]/10 hover:text-[#0D7377]"
+                onClick={() =>
+                  activeMegaMenu === "library"
+                    ? scheduleMegaMenuClose()
+                    : openMegaMenu("library")
+                }
+                onFocus={() => openMegaMenu("library")}
+                onBlur={scheduleMegaMenuClose}
+              >
                 {megaMenuData.library.icon} Library
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -244,8 +294,8 @@ export function SiteHeader() {
         {activeMegaMenu && (
           <div
             className="hidden lg:block absolute left-0 right-0 top-full bg-white border-t border-[#0D7377]/10 shadow-xl"
-            onMouseEnter={() => setActiveMegaMenu(activeMegaMenu)}
-            onMouseLeave={() => setActiveMegaMenu(null)}
+            onMouseEnter={() => openMegaMenu(activeMegaMenu)}
+            onMouseLeave={scheduleMegaMenuClose}
           >
             <div className="mx-auto max-w-7xl px-6 sm:px-12 py-8">
               <div className="grid grid-cols-3 gap-8">
