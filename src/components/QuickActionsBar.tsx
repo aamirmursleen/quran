@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const actions = [
-  { label: "Search", icon: "🔍", href: "#search" },
-  { label: "Browse All", icon: "📖", href: "/library" },
-  { label: "Donate", icon: "💛", href: "/donate" },
-  { label: "Get the App", icon: "📱", href: "/app" },
+  { label: "Download PDFs", icon: "📥", href: "#download" },
+  { label: "Listen Audio", icon: "🎧", href: "#audio" },
+  { label: "Explore Library", icon: "🧭", href: "#library" },
+  { label: "Ask the AI", icon: "🤖", href: "#ask-ai" },
 ];
 
 export function QuickActionsBar() {

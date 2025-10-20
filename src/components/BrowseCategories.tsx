@@ -3,17 +3,21 @@ import { categories } from "@/data/content";
 
 export function BrowseCategories() {
   return (
-    <section className="section-fade mx-auto mt-24 max-w-6xl px-6 sm:px-12" data-delay="2">
+    <section
+      id="categories"
+      className="section-fade mx-auto mt-24 max-w-6xl px-6 sm:px-12"
+      data-delay="2"
+    >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#0D7377]">
-            Explore Islamic Literature
+            Explore Islamic literature
           </p>
           <h2 className="text-3xl font-semibold text-[#0D7377] sm:text-[2.5rem]">
             Curated collections for every learner
           </h2>
           <p className="max-w-2xl text-base text-[#2C3E50]/70">
-            Tap into classical and contemporary works, from authenticated Hadith to modern reflections.
+            Tap into classical and contemporary works, from authenticated hadith to modern reflections, with categories built for quick discovery.
           </p>
         </div>
 

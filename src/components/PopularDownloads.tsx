@@ -3,17 +3,21 @@ import { popularDownloads } from "@/data/content";
 
 export function PopularDownloads() {
   return (
-    <section className="section-fade mx-auto mt-24 max-w-5xl px-6 sm:px-12" data-delay="3">
+    <section
+      id="popular"
+      className="section-fade mx-auto mt-24 max-w-5xl px-6 sm:px-12"
+      data-delay="3"
+    >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#D4AF37]">
-            Most Downloaded This Week
+            Most downloaded this week
           </p>
           <h2 className="text-3xl font-semibold text-[#0D7377] sm:text-[2.5rem]">
             Loved by seekers around the world
           </h2>
           <p className="max-w-2xl text-base text-[#2C3E50]/70">
-            Real-time trends showcasing what the community is engaged with right now.
+            Real-time trends showcasing what the community is engaging with right now—perfect if you want inspiration fast.
           </p>
         </div>
 

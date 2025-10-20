@@ -3,17 +3,21 @@ import { featuredSurahs } from "@/data/content";
 
 export function FeaturedSurahs() {
   return (
-    <section className="section-fade mx-auto mt-24 max-w-6xl px-6 sm:px-12" data-delay="1">
+    <section
+      id="surahs"
+      className="section-fade mx-auto mt-24 max-w-6xl px-6 sm:px-12"
+      data-delay="1"
+    >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#D4AF37]">
-            Featured Quranic Chapters
+            Featured Quranic chapters
           </p>
           <h2 className="text-3xl font-semibold text-[#0D7377] sm:text-[2.5rem]">
-            Deeply loved surahs for daily connection
+            Daily favorites ready to read, download, or listen
           </h2>
           <p className="max-w-2xl text-base text-[#2C3E50]/70">
-            Hand-picked chapters with beautiful calligraphy, verified translations, and gentle recitation guides.
+            Hand-picked surahs with verified translations, transliteration, and quick links to matching recitations.
           </p>
         </div>
 
