@@ -29,7 +29,6 @@ export async function POST(req: NextRequest) {
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      req.ip ||
       "anonymous";
     const now = Date.now();
     const current = rateLimitStore.get(ip);
