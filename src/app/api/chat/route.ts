@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...messages.map((msg: { role: string; content: string }) => ({
+        { role: "system" as const, content: SYSTEM_PROMPT },
+        ...messages.map((msg: { role: "user" | "assistant"; content: string }) => ({
           role: msg.role,
           content: msg.content,
         })),
