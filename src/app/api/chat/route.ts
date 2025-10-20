@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || "dummy-key-for-build",
 });
 
 const SYSTEM_PROMPT = `You are a helpful AI assistant for an Islamic digital library. Your role is to help users find Islamic resources including:
@@ -19,6 +19,14 @@ If users ask about downloading, listening, or reading Islamic content, enthusias
 
 export async function POST(req: NextRequest) {
   try {
+    // Check if API key is configured
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json(
+        { error: "OpenAI API key is not configured. Please add OPENAI_API_KEY to environment variables." },
+        { status: 500 }
+      );
+    }
+
     const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
