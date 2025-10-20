@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 const learningResources = [
   {
@@ -29,9 +30,13 @@ const learningResources = [
 
 export function LearningResourcesSection() {
   return (
-    <section id="learning" className="px-6 py-16 sm:px-12 bg-gradient-to-b from-[#0D7377]/5 to-white">
+    <section
+      id="learning"
+      className="px-6 py-16 sm:px-12 bg-gradient-to-b from-[#0D7377]/5 to-white"
+      data-animate="fade-up"
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <div className="mb-12 text-center" data-animate="fade-up">
           <h2 className="text-3xl sm:text-4xl font-bold text-[#0D7377] mb-4 font-display">
             🎓 Guided learning resources
           </h2>
@@ -45,6 +50,8 @@ export function LearningResourcesSection() {
             <div
               key={idx}
               className="bg-white p-8 rounded-2xl border-2 border-[#0D7377]/10 hover:border-[#0D7377] transition-all hover:shadow-xl"
+              data-animate="fade-up"
+              style={{ "--reveal-delay": `${0.1 + idx * 0.08}s` } as CSSProperties}
             >
               <div className="text-6xl mb-4 text-center">{resource.icon}</div>
               <h3 className="text-2xl font-bold text-[#0D7377] mb-3 text-center font-display">
@@ -71,7 +78,11 @@ export function LearningResourcesSection() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-[#0D7377] to-[#4DB8B8] rounded-2xl p-8 md:p-12 text-white">
+        <div
+          className="bg-gradient-to-r from-[#0D7377] to-[#4DB8B8] rounded-2xl p-8 md:p-12 text-white"
+          data-animate="fade-up"
+          data-delay="2"
+        >
           <div className="grid gap-8 md:grid-cols-2 items-center">
             <div>
               <h3 className="text-3xl font-bold mb-4 font-display">

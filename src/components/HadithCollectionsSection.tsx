@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 const hadithBooks = [
   {
@@ -47,9 +48,13 @@ const hadithBooks = [
 
 export function HadithCollectionsSection() {
   return (
-    <section id="library" className="px-6 py-16 sm:px-12 bg-gradient-to-b from-[#0D7377]/5 to-white">
+    <section
+      id="library"
+      className="px-6 py-16 sm:px-12 bg-gradient-to-b from-[#0D7377]/5 to-white"
+      data-animate="fade-up"
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <div className="mb-12 text-center" data-animate="fade-up">
           <h2 className="text-3xl sm:text-4xl font-bold text-[#0D7377] mb-4 font-display">
             📜 Hadith books ready to download
           </h2>
@@ -64,6 +69,8 @@ export function HadithCollectionsSection() {
               key={idx}
               href={book.href}
               className="group p-6 bg-white rounded-xl border-2 border-[#0D7377]/10 hover:border-[#0D7377] transition-all hover:shadow-lg"
+              data-animate="fade-up"
+              style={{ "--reveal-delay": `${0.1 + idx * 0.08}s` } as CSSProperties}
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="text-4xl">{book.icon}</div>
@@ -91,7 +98,11 @@ export function HadithCollectionsSection() {
           ))}
         </div>
 
-        <div className="mt-12 rounded-2xl border-2 border-[#0D7377]/20 bg-white p-8">
+        <div
+          className="mt-12 rounded-2xl border-2 border-[#0D7377]/20 bg-white p-8"
+          data-animate="fade-up"
+          data-delay="2"
+        >
           <div className="grid gap-6 md:grid-cols-3">
             <div className="text-center">
               <div className="text-4xl mb-3">🔍</div>

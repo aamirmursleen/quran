@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 const bookCategories = [
   {
@@ -53,9 +54,13 @@ const bookCategories = [
 
 export function IslamicBooksSection() {
   return (
-    <section id="books" className="px-6 py-16 sm:px-12 bg-white">
+    <section
+      id="books"
+      className="px-6 py-16 sm:px-12 bg-white"
+      data-animate="fade-up"
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <div className="mb-12 text-center" data-animate="fade-up">
           <h2 className="text-3xl sm:text-4xl font-bold text-[#0D7377] mb-4 font-display">
             📚 Explore trusted Islamic books
           </h2>
@@ -70,6 +75,8 @@ export function IslamicBooksSection() {
               key={idx}
               href={category.href}
               className={`group p-6 bg-gradient-to-br ${category.color} rounded-xl border-2 border-transparent hover:border-[#0D7377] transition-all hover:shadow-lg`}
+              data-animate="fade-up"
+              style={{ "--reveal-delay": `${0.1 + idx * 0.08}s` } as CSSProperties}
             >
               <div className="text-5xl mb-4">{category.icon}</div>
               <h3 className="text-xl font-bold text-[#0D7377] mb-2 group-hover:text-[#4DB8B8]">

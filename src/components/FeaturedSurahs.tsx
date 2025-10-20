@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { featuredSurahs } from "@/data/content";
+import type { CSSProperties } from "react";
 
 export function FeaturedSurahs() {
   return (
@@ -7,9 +8,10 @@ export function FeaturedSurahs() {
       id="surahs"
       className="section-fade mx-auto mt-24 max-w-6xl px-6 sm:px-12"
       data-delay="1"
+      data-animate="fade-up"
     >
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3" data-animate="fade-up">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#D4AF37]">
             Featured Quranic chapters
           </p>
@@ -22,11 +24,13 @@ export function FeaturedSurahs() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          {featuredSurahs.map((surah) => (
+          {featuredSurahs.map((surah, index) => (
             <Link
               key={surah.id}
               href={`/surah/${surah.slug}`}
               className="group relative overflow-hidden rounded-3xl border border-white/80 bg-white p-6 shadow-[var(--shadow-md)] transition hover:-translate-y-2 hover:shadow-[var(--shadow-lg)]"
+              data-animate="fade-up"
+              style={{ "--reveal-delay": `${0.1 + index * 0.08}s` } as CSSProperties}
             >
               <div
                 className={`absolute inset-0 opacity-0 transition group-hover:opacity-100 bg-gradient-to-br ${surah.accent}`}

@@ -86,21 +86,90 @@ h5 {
 }
 
 .section-fade {
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.reveal-ready .section-fade {
   opacity: 0;
-  transform: translateY(24px);
-  animation: fadeInUp 0.8s ease forwards;
+  transform: translateY(32px);
 }
 
-.section-fade[data-delay="1"] {
-  animation-delay: 0.15s;
+html.reveal-ready .section-fade.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.section-fade[data-delay="2"] {
-  animation-delay: 0.3s;
+html.reveal-ready .section-fade[data-delay="1"] {
+  transition-delay: 0.12s;
 }
 
-.section-fade[data-delay="3"] {
-  animation-delay: 0.45s;
+html.reveal-ready .section-fade[data-delay="2"] {
+  transition-delay: 0.24s;
+}
+
+html.reveal-ready .section-fade[data-delay="3"] {
+  transition-delay: 0.36s;
+}
+
+html.reveal-ready [data-animate] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity var(--reveal-duration, 0.7s) ease,
+    transform var(--reveal-duration, 0.7s) cubic-bezier(0.22, 1, 0.36, 1),
+    filter var(--reveal-duration, 0.7s) ease;
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+html.reveal-ready [data-animate="fade-in"] {
+  transform: none;
+}
+
+html.reveal-ready [data-animate="fade-up"] {
+  transform: translateY(36px);
+}
+
+html.reveal-ready [data-animate="slide-left"] {
+  transform: translateX(48px);
+}
+
+html.reveal-ready [data-animate="slide-right"] {
+  transform: translateX(-48px);
+}
+
+html.reveal-ready [data-animate="scale"] {
+  transform: translateY(20px) scale(0.92);
+}
+
+html.reveal-ready [data-animate="float"] {
+  transform: translateY(48px) scale(0.96);
+  filter: blur(3px);
+}
+
+html.reveal-ready [data-animate].is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: none;
+}
+
+html.reveal-ready [data-animate][data-delay="1"] {
+  --reveal-delay: 0.12s;
+}
+
+html.reveal-ready [data-animate][data-delay="2"] {
+  --reveal-delay: 0.24s;
+}
+
+html.reveal-ready [data-animate][data-delay="3"] {
+  --reveal-delay: 0.36s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.reveal-ready [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 .gradient-card {

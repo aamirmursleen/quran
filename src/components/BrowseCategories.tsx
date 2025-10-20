@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { categories } from "@/data/content";
+import type { CSSProperties } from "react";
 
 export function BrowseCategories() {
   return (
@@ -7,9 +8,10 @@ export function BrowseCategories() {
       id="categories"
       className="section-fade mx-auto mt-24 max-w-6xl px-6 sm:px-12"
       data-delay="2"
+      data-animate="fade-up"
     >
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3" data-animate="fade-up">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#0D7377]">
             Explore Islamic literature
           </p>
@@ -23,11 +25,13 @@ export function BrowseCategories() {
 
         <div className="-mx-6 overflow-x-auto px-6">
           <div className="flex min-w-full gap-4">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <Link
                 key={category.id}
                 href={`/category/${category.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
                 className={`gradient-card relative inline-flex w-64 shrink-0 flex-col justify-between rounded-3xl border border-white/60 bg-white/70 p-5 shadow-[var(--shadow-sm)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-md)]`}
+                data-animate="fade-up"
+                style={{ "--reveal-delay": `${0.1 + index * 0.06}s` } as CSSProperties}
               >
                 <div className="space-y-3">
                   <span className="inline-flex rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#0D7377]">

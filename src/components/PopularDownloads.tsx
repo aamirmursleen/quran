@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { popularDownloads } from "@/data/content";
+import type { CSSProperties } from "react";
 
 export function PopularDownloads() {
   return (
@@ -7,9 +8,10 @@ export function PopularDownloads() {
       id="popular"
       className="section-fade mx-auto mt-24 max-w-5xl px-6 sm:px-12"
       data-delay="3"
+      data-animate="fade-up"
     >
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3" data-animate="fade-up">
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#D4AF37]">
             Most downloaded this week
           </p>
@@ -26,6 +28,8 @@ export function PopularDownloads() {
             <div
               key={item.id}
               className="group relative overflow-hidden rounded-3xl border border-white/80 bg-white/90 p-6 shadow-[var(--shadow-md)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]"
+              data-animate="fade-up"
+              style={{ "--reveal-delay": `${0.08 + index * 0.08}s` } as CSSProperties}
             >
               <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-[#0D7377] to-[#4DB8B8]" />
               <div className="relative grid gap-4 sm:grid-cols-[80px_1fr_auto] sm:items-center">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 const downloadOptions = [
   {
@@ -33,9 +34,13 @@ const downloadOptions = [
 
 export function DownloadQuranSection() {
   return (
-    <section id="download" className="px-6 py-16 sm:px-12 bg-gradient-to-b from-white to-[#0D7377]/5">
+    <section
+      id="download"
+      className="px-6 py-16 sm:px-12 bg-gradient-to-b from-white to-[#0D7377]/5"
+      data-animate="fade-up"
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 text-center">
+        <div className="mb-12 text-center" data-animate="fade-up">
           <h2 className="font-display text-3xl font-bold text-[#0D7377] sm:text-4xl">
             📥 Download high-quality Qur&apos;an PDFs
           </h2>
@@ -50,6 +55,8 @@ export function DownloadQuranSection() {
               key={idx}
               href={option.href}
               className="group p-6 bg-white rounded-xl border-2 border-[#0D7377]/10 hover:border-[#0D7377] transition-all hover:shadow-lg"
+              data-animate="fade-up"
+              style={{ "--reveal-delay": `${0.1 + idx * 0.08}s` } as CSSProperties}
             >
               <div className="text-4xl mb-4">{option.icon}</div>
               <h3 className="text-lg font-bold text-[#0D7377] mb-2 group-hover:text-[#4DB8B8]">

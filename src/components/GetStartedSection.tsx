@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 const steps = [
   {
@@ -26,13 +27,22 @@ const steps = [
 
 export function GetStartedSection() {
   return (
-    <section className="relative z-20 -mt-24 px-6 sm:px-12" aria-label="Quick start">
+    <section
+      className="relative z-20 -mt-24 px-6 sm:px-12"
+      aria-label="Quick start"
+      data-animate="fade-up"
+    >
       <div className="mx-auto max-w-6xl">
         <div className="glass-panel grid gap-4 rounded-3xl p-6 shadow-[var(--shadow-lg)] sm:grid-cols-3 sm:gap-6 sm:p-10">
-          {steps.map((step) => (
+          {steps.map((step, index) => (
             <div
               key={step.title}
               className="flex flex-col gap-4 rounded-2xl border border-white/40 bg-white/80 p-5 text-center transition hover:-translate-y-1 hover:shadow-[var(--shadow-md)]"
+              data-animate="scale"
+              style={{
+                // Reveal cards sequentially without extra JS logic
+                "--reveal-delay": `${0.15 + index * 0.12}s`,
+              } as CSSProperties}
             >
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0D7377]/10 text-2xl">
                 {step.icon}

@@ -6,10 +6,11 @@ export function AISearchPanel() {
       id="ask-ai"
       className="section-fade mx-auto mt-24 max-w-5xl px-6"
       data-delay="1"
+      data-animate="fade-up"
     >
       <div className="glass-panel rounded-3xl p-8 sm:p-12">
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3" data-animate="fade-up">
             <div className="ai-avatar flex h-12 w-12 items-center justify-center rounded-2xl text-xl">
               🤖
             </div>

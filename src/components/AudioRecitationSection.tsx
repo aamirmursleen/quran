@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 const reciters = [
   {
@@ -29,9 +30,13 @@ const reciters = [
 
 export function AudioRecitationSection() {
   return (
-    <section id="audio" className="px-6 py-16 sm:px-12 bg-white">
+    <section
+      id="audio"
+      className="px-6 py-16 sm:px-12 bg-white"
+      data-animate="fade-up"
+    >
       <div className="mx-auto max-w-6xl">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12" data-animate="fade-up">
           <h2 className="text-3xl sm:text-4xl font-bold text-[#0D7377] mb-4 font-display">
             🎧 Listen to Qur&apos;an recitations right away
           </h2>
@@ -46,6 +51,8 @@ export function AudioRecitationSection() {
               key={idx}
               href={reciter.href}
               className="group p-6 bg-gradient-to-br from-[#0D7377]/5 to-[#4DB8B8]/5 rounded-xl border-2 border-transparent hover:border-[#0D7377] transition-all hover:shadow-lg"
+              data-animate="scale"
+              style={{ "--reveal-delay": `${0.1 + idx * 0.08}s` } as CSSProperties}
             >
               <div className="text-5xl mb-4 text-center">{reciter.icon}</div>
               <h3 className="text-lg font-bold text-[#0D7377] mb-2 text-center group-hover:text-[#4DB8B8]">
@@ -58,7 +65,11 @@ export function AudioRecitationSection() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-[#0D7377]/10 to-[#4DB8B8]/10 rounded-2xl p-8 text-center">
+        <div
+          className="bg-gradient-to-r from-[#0D7377]/10 to-[#4DB8B8]/10 rounded-2xl p-8 text-center"
+          data-animate="fade-up"
+          data-delay="2"
+        >
           <h3 className="text-2xl font-bold text-[#0D7377] mb-3 font-display">
             🎵 What you can do here
           </h3>

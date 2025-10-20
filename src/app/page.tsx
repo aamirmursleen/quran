@@ -10,10 +10,12 @@ import { IslamicBooksSection } from "@/components/IslamicBooksSection";
 import { LearningResourcesSection } from "@/components/LearningResourcesSection";
 import { PopularDownloads } from "@/components/PopularDownloads";
 import { QuickActionsBar } from "@/components/QuickActionsBar";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-[#FEFDF8] text-[#2C3E50]">
+      <ScrollReveal />
       <QuickActionsBar />
       <HeroSection />
       <GetStartedSection />
