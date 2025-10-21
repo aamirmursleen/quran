@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import {
   inspirationalQuotes,
   recommendedAfterDownload,
@@ -14,9 +14,10 @@ import { downloadVariants } from "@/data/downloadManifest";
 export default function DownloadFlowPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const surahMeta = allSurahs.find((item) => item.slug === params.slug);
+  const { slug } = use(params);
+  const surahMeta = allSurahs.find((item) => item.slug === slug);
 
   if (!surahMeta) {
     notFound();

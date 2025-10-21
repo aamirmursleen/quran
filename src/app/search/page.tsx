@@ -8,13 +8,14 @@ const revelationFilters: { label: string; value: RevelationType | "all" }[] = [
   { label: "Madani", value: "Madani" },
 ];
 
-export default function SearchPage({
+export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string; revelation?: RevelationType | "all" };
+  searchParams: Promise<{ q?: string; revelation?: RevelationType | "all" }>;
 }) {
-  const query = searchParams.q ?? "";
-  const revelation = (searchParams.revelation ?? "all") as RevelationType | "all";
+  const params = await searchParams;
+  const query = params.q ?? "";
+  const revelation = (params.revelation ?? "all") as RevelationType | "all";
   const results = searchSurahs(query, revelation);
 
   return (

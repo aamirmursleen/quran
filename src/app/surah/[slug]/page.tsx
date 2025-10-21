@@ -4,12 +4,13 @@ import { surahDetails } from "@/data/content";
 import { allSurahs } from "@/data/surahs";
 import { downloadVariants } from "@/data/downloadManifest";
 
-export default function SurahDetailPage({
+export default async function SurahDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const surahMeta = allSurahs.find((item) => item.slug === params.slug);
+  const { slug } = await params;
+  const surahMeta = allSurahs.find((item) => item.slug === slug);
 
   if (!surahMeta) {
     notFound();

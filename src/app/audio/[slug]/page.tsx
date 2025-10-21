@@ -4,20 +4,22 @@ import { reciters } from "@/data/audio";
 import { allSurahs } from "@/data/surahs";
 import { surahDetails } from "@/data/content";
 
-export default function AudioSurahPage({
+export default async function AudioSurahPage({
   params,
   searchParams,
 }: {
-  params: { slug: string };
-  searchParams: { reciter?: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ reciter?: string }>;
 }) {
-  const surahMeta = allSurahs.find((item) => item.slug === params.slug);
+  const { slug } = await params;
+  const { reciter } = await searchParams;
+  const surahMeta = allSurahs.find((item) => item.slug === slug);
   if (!surahMeta) {
     notFound();
   }
 
   const detail = surahDetails[surahMeta.slug];
-  const activeReciter = reciters.find((item) => item.id === searchParams.reciter) ?? reciters[0];
+  const activeReciter = reciters.find((item) => item.id === reciter) ?? reciters[0];
 
   return (
     <main className="min-h-screen bg-[#FEFDF8] px-6 py-16 text-[#2C3E50] sm:px-12">

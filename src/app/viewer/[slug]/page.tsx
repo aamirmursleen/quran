@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { surahDetails, viewerShortcuts } from "@/data/content";
 import { allSurahs } from "@/data/surahs";
 
 export default function ViewerPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const surahMeta = allSurahs.find((item) => item.slug === params.slug);
+  const { slug } = use(params);
+  const surahMeta = allSurahs.find((item) => item.slug === slug);
 
   if (!surahMeta) {
     notFound();
