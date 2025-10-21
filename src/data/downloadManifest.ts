@@ -1,4 +1,5 @@
 import type { SurahListItem } from "./surahs";
+import { tajweedLinks } from "./tajweedLinks";
 
 export type DownloadVariant = {
   id: string;
@@ -38,6 +39,19 @@ export const downloadVariants: DownloadVariant[] = [
     format: "PDF",
     approximateSizeMB: 2.1,
     url: (surah) =>
+      `https://cdn.islamic.network/quran/pdf/quran-indopak/${padSurahNumber(
+        surah.number,
+      )}.pdf`,
+  },
+  {
+    id: "arabic-tajweed-13line",
+    label: "Arabic Tajweed (13-line Mushaf)",
+    description: "Colour-coded tajweed markings in the IndoPak 13-line layout.",
+    language: "Arabic",
+    format: "PDF",
+    approximateSizeMB: 3.2,
+    url: (surah) =>
+      tajweedLinks[surah.number] ??
       `https://cdn.islamic.network/quran/pdf/quran-indopak/${padSurahNumber(
         surah.number,
       )}.pdf`,
